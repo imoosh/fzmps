@@ -1,6 +1,6 @@
 package models
 
-type FzmpUser struct {
+type FzmpsUser struct {
 	Avatar        string `json:"avatar"`
 	Birthday      int    `json:"birthday"`
 	Gender        int    `json:"gender"`
@@ -14,6 +14,6 @@ type FzmpUser struct {
 	RegisterTime  int64  `json:"register_time"`
 	UserLevelId   int    `json:"user_level_id"`
 	Username      string `json:"username"`
-	OpenId        string `json:"openid"`
-	UnionId       string `json:"unionid"`
+	OpenId        string `json:"openid"  orm:"column(openid)"`
+	UnionId       string `json:"unionid" orm:"column(unionid)"`
 }
