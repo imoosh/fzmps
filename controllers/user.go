@@ -1,82 +1,79 @@
 package controllers
 
 import (
-	"centnet-fzmps/common/log"
-	"centnet-fzmps/utils"
-	"encoding/json"
-	"github.com/astaxie/beego"
-	"github.com/gin-gonic/gin"
-	"net/http"
+    "centnet-fzmps/common/log"
+    "centnet-fzmps/utils"
+    "github.com/astaxie/beego"
+    "github.com/gin-gonic/gin"
+    "net/http"
+    "strings"
 )
 
 type UserController struct {
-	beego.Controller
+    beego.Controller
 }
 
 // 响应用户信息
 type UserInfoResp struct {
-	Age          string        `json:"age"`
-	Professional string        `json:"professional"`
-	RealName     string        `json:"realName"`
-	AllNum       string        `json:"allNum"`
-	Days         string        `json:"days"`
-	RelativeNum  string        `json:"relativeNum"`
-	Relations    []interface{} `json:"relations"`
-	OrgName      string        `json:"orgName"`
+    Age          string        `json:"age"`
+    Professional string        `json:"professional"`
+    RealName     string        `json:"realName"`
+    AllNum       string        `json:"allNum"`
+    Days         string        `json:"days"`
+    RelativeNum  string        `json:"relativeNum"`
+    Relations    []interface{} `json:"relations"`
+    OrgName      string        `json:"orgName"`
+    Region       []string      `json:"region"`
 }
 
 // 更新用户信息
 type UserUpdateReq struct {
-	Age          string `json:"age"`
-	Professional string `json:"professional"`
-	RealName     string `json:"realName"`
-}
-
-// api/user：请求用户信息
-func (c *UserController) UserInfo() {
-	var u UserInfoResp
-
-	resp := make(map[string]interface{})
-	resp["age"] = u.Age
-	resp["professional"] = u.Professional
-	resp["realName"] = u.RealName
-	resp["allNum"] = u.AllNum
-	resp["days"] = u.Days
-	resp["relativeNum"] = u.RelativeNum
-	resp["relations"] = nil
-	resp["orgName"] = u.OrgName
-
-	utils.ReturnHTTPSuccess(&c.Controller, resp)
-	c.ServeJSON()
-}
-
-// api/user/update：更新用户信息
-func (c *UserController) UpdateUserInfo() {
-	var req UserUpdateReq
-	json.Unmarshal(c.Ctx.Input.RequestBody, &req)
-	log.Debug(req)
-
-	utils.ReturnHTTPSuccess(&c.Controller, nil)
-	c.ServeJSON()
+    Age        string `json:"age"`
+    Profession string `json:"profession"`
+    RealName   string `json:"realName"`
 }
 
 // 请求用户信息
 func GetUserInfo(c *gin.Context) {
-	var u UserInfoResp
 
-	c.JSON(http.StatusOK, utils.ReturnHTTPSuccess1(&u))
+    token := c.GetHeader("Authorization")
+    if len(token) == 0 {
+        c.JSON(http.StatusOK, utils.ReturnHTTPSuccess(&UserInfoResp{}))
+        return
+    }
+
+    user, err := DB(c).QueryUserByToken(token)
+    if err != nil {
+        log.Error(err)
+        c.JSON(http.StatusOK, utils.ReturnHTTPSuccess(nil))
+    }
+    resp := UserInfoResp{
+        Age:          user.Age,
+        Professional: user.Profession,
+        RealName:     user.Username,
+        AllNum:       "",
+        Days:         "",
+        RelativeNum:  "",
+        Relations:    nil,
+        OrgName:      "",
+        Region:       strings.Split(user.Region, "|"),
+    }
+
+    c.JSON(http.StatusOK, utils.ReturnHTTPSuccess(&resp))
 }
 
 // 更新用户信息
 func UpdateUserInfo(c *gin.Context) {
-	var req UserUpdateReq
+    var req UserUpdateReq
 
-	err := c.ShouldBindJSON(&req)
-	if err != nil {
-		log.Error(err)
-		c.JSON(http.StatusBadRequest, utils.ReturnHTTPSuccess1(nil))
-		return
-	}
+    err := c.ShouldBindJSON(&req)
+    if err != nil {
+        log.Error(err)
+        c.JSON(http.StatusBadRequest, utils.ReturnHTTPSuccess(nil))
+        return
+    }
 
-	c.JSON(http.StatusOK, utils.ReturnHTTPSuccess1(nil))
+    //DB(c).UpdateUserInfo()
+
+    c.JSON(http.StatusOK, utils.ReturnHTTPSuccess(nil))
 }

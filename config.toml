@@ -1,0 +1,36 @@
+# centnet-rfs profile
+# created by Wayne Yao, 2020-11-17
+
+# 日志相关配置
+[Logging]
+    LogPath = "./log"
+    LogFile = "main.log"
+    FileLevel = "DEBUG"
+    ConsoleLevel = "DEBUG"
+    MaxAge = 7
+    MaxSize = 10
+
+[MiniPro]
+    [MiniPro.Auth]
+    AppId = "wx3a6389b153c6df95"
+    AppSecret = "6ca15b48f10d7359f0d0e28330ccd36a"
+
+    [MiniPro.API]
+    Host = "192.168.1.14"
+    Port = 6060
+
+[ORM]
+    DSN = "root:123456@tcp(192.168.1.14:3306)/centnet_fzmps?timeout=10s&readTimeout=10s&writeTimeout=10s&parseTime=true&loc=Local&charset=utf8mb4"
+    Active = 100
+    Idle = 5
+    IdleTimeout = "10m"
+
+[Services]
+    #https://lbs.qq.com/service/webService/webServiceGuide/webServiceGcoder
+    [Services.Location]
+    Key = "QEQBZ-SOCH6-FV2SP-M3X3K-J2TRK-Y3BZB"
+
+    # 企业微信后台推送数据授权
+    [Services.WeCom]
+    AppId = "432a8nc4"
+    AppSecret = "a8f224aea83a97ed395c75df6fe3a889"
