@@ -1,27 +1,33 @@
 package main
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego/logs"
+    "centnet-fzmps/common/log"
+    "centnet-fzmps/conf"
+    "centnet-fzmps/dao"
+    "centnet-fzmps/routers"
+    "centnet-fzmps/services"
+    "flag"
+    "fmt"
+    "runtime"
 
-	_ "centnet-fzmps/models"
-	_ "centnet-fzmps/routers"
+    _ "centnet-fzmps/models"
+    _ "centnet-fzmps/routers"
 )
 
 func main() {
-	logger := logs.NewLogger()
-	logger.SetLogger(logs.AdapterConsole)
-	logs.EnableFuncCallDepth(true)
+    runtime.GOMAXPROCS(runtime.NumCPU())
 
-	beego.BConfig.WebConfig.AutoRender = false
-	beego.BConfig.CopyRequestBody = true
+    /* 解析参数 */
+    flag.Parse()
+    conf.Init()
+    fmt.Println(conf.Conf)
 
-	beego.BConfig.WebConfig.Session.SessionOn = true
-	beego.BConfig.Listen.HTTPAddr = "192.168.1.14"
-	beego.BConfig.Listen.HTTPPort = 6060
+    log.Init(conf.Conf.Logging)
 
-	beego.InsertFilter("/api/*", beego.BeforeExec, func(context *context.Context) {}, true, true)
+    dao, err := dao.New(conf.Conf)
+    if err != nil {
+        panic(err)
+    }
 
-	beego.Run() // listen and serve on 0.0.0.0:8080
+    services.Init(routers.Init(dao))
 }

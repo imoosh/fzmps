@@ -3,11 +3,13 @@ module centnet-fzmps
 go 1.16
 
 require (
+	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/Shopify/sarama v1.29.0
 	github.com/astaxie/beego v1.12.3
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/protobuf v1.4.2
+	github.com/hashicorp/go-uuid v1.0.2 // indirect
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.4 // indirect
