@@ -38,7 +38,7 @@ func (db *Dao) init() error {
         &models.FzmpsRelationDict{},
         &models.FzmpsProfessionDict{},
         &models.FzmpsAgePhasesDict{},
-        &models.Family{},
+        &models.FzmpsFamily{},
     }
 
     err := db.db.Set("gorm:table_options", options).AutoMigrate(tables...)

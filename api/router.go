@@ -30,7 +30,7 @@ func routeInit(dao *dao.Dao) *gin.Engine {
     router.POST("/api/wechat/perfect", controllers.PerfectRegisterInfo)
 
     // 获取用户信息
-    router.GET("/api/user/get", controllers.GetUserInfo)
+    router.GET("/api/user/get", controllers.RequestUserInfo)
 
     // 更新用户信息
     router.POST("/api/user/update", controllers.UpdateUserInfo)
