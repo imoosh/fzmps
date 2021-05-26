@@ -1,18 +1,24 @@
-package routers
+package api
 
 import (
+    "centnet-fzmps/common/log"
     "centnet-fzmps/controllers"
     "centnet-fzmps/dao"
-    "centnet-fzmps/services"
     "github.com/gin-gonic/gin"
     "net/http"
 )
 
-func Init(dao *dao.Dao) *gin.Engine {
+type ginLogger struct {
+}
+
+func (l ginLogger) Write(p []byte) (n int, err error) {
+    log.Debug(string(p))
+    return 0, nil
+}
+
+func routeInit(dao *dao.Dao) *gin.Engine {
     router := gin.New()
-    router.Use(gin.LoggerWithWriter(&GinLogger{}), gin.Recovery(), func(c *gin.Context) {
-        c.Set("db", dao)
-    })
+    router.Use(gin.LoggerWithWriter(&ginLogger{}), gin.Recovery(), func(c *gin.Context) { c.Set("db", dao) })
 
     // 通过微信登陆
     router.POST("/api/wechat/login", controllers.WeChatLogin)
@@ -29,37 +35,42 @@ func Init(dao *dao.Dao) *gin.Engine {
     // 更新用户信息
     router.POST("/api/user/update", controllers.UpdateUserInfo)
 
-    // 获取家人相关信息
-    router.POST("/api/dict/list", controllers.GetDictList)
+    // 获取字典信息
+    router.POST("/api/dict/list", controllers.RequestDictList)
 
     // 获取家人列表
-    router.POST("/api/relative/getRelativeList", controllers.GetRelativeList)
+    router.GET("/api/relative/list", controllers.RequestFamilyMembersList)
 
     // 删除家人信息
-    router.POST("api/relative/deleteRelative", controllers.DeleteRelative)
+    router.POST("/api/relative/delete/:id", controllers.DeleteFamilyMember)
 
     // 添加家人信息
-    router.POST("/api/relative/putRelative", controllers.AddRelative)
+    router.POST("/api/relative/add", controllers.AddFamilyMember)
 
     // 更新家人信息
-    router.POST("/api/relative/updateRelative", controllers.UpdateRelative)
+    router.PUT("/api/relative/udpate", controllers.UpdateFamilyMember)
 
     // 获取家人信息
-    router.POST("/api/relative/get", controllers.GetRelative)
+    router.GET("/api/relative/:id", controllers.RequestFamilyMember)
 
     // 守护详情列表
-    router.POST("/api/record/list", controllers.GetRecordList)
+    router.POST("/api/record/list", controllers.RequestRecordList)
 
     // 守护详情饼状图数据
-    router.POST("/api/guard/count/pie", controllers.GetRecordPie)
+    router.POST("/api/guard/count/pie", controllers.RequestRecordPie)
 
     router.GET("/api/wechat/sysArea/getAreaInfo/:t", controllers.GetAreaInfo)
 
     router.GET("/api/wechat/sysArea/org/list/:t", controllers.GetCooperationOrgInfo)
 
+    router.GET("/api/alarm/get", controllers.RequestAlarm)
+
+    router.GET("/api/alarm/confirm", controllers.ConfirmAlarm)
+
+    // 针对企业微信后台开放接口
     wecom := router.Group("/api/wecom")
     {
-        wecom.POST("/api/wecom/pushed-alarm", services.WeComVictimAlarm)
+        wecom.POST("/alarm", WeComVictimAlarm)
     }
 
     authorized := router.Group("/")

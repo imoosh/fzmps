@@ -30,9 +30,18 @@ func New(c *conf.Config) (dao *Dao, err error) {
     return dao, nil
 }
 
-func (dao *Dao) init() error {
+func (db *Dao) init() error {
     var options = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1;"
-    err := dao.db.Set("gorm:table_options", options).AutoMigrate(&models.FzmpsUser{}, &models.VictimAlarm{}, &models.FzmpsAlarm{})
+    var tables = []interface{}{
+        &models.FzmpsUser{},
+        &models.FzmpsAlarm{},
+        &models.FzmpsRelationDict{},
+        &models.FzmpsProfessionDict{},
+        &models.FzmpsAgePhasesDict{},
+        &models.Family{},
+    }
+
+    err := db.db.Set("gorm:table_options", options).AutoMigrate(tables...)
     if err != nil {
         log.Error(err)
         return err

@@ -1,4 +1,4 @@
-package services
+package api
 
 import (
     "centnet-fzmps/conf"
@@ -14,13 +14,13 @@ type Service struct {
     dao    *dao.Dao
 }
 
-func Init(r *gin.Engine) {
+func Init(d *dao.Dao) {
 
     srv = &Service{
-        router: r,
+        dao:    d,
+        router: routeInit(d),
     }
 
-    var api = conf.Conf.MiniPro.API
-    r.Run(fmt.Sprintf("%s:%d", api.Host, api.Port))
-
+    var api = conf.Conf.API
+    srv.router.Run(fmt.Sprintf("%s:%d", api.Host, api.Port))
 }
