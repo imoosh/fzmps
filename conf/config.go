@@ -13,39 +13,28 @@ var (
 )
 
 type Config struct {
-    Logging  *log.Config
-    MiniPro  *MiniProgram
-    ORM      *orm.Config
-    Services *Services
-}
+    API *struct {
+        Host  string
+        Port  int
+        WeCom *struct {
+            AppId     string
+            AppSecret string
+        }
+    }
 
-type Auth struct {
-    AppId     string
-    AppSecret string
-}
+    Services *struct {
+        Location *struct {
+            Key string
+        }
 
-type API struct {
-    Host string
-    Port int
-}
+        MiniPro *struct {
+            AppId     string
+            AppSecret string
+        }
+    }
 
-type MiniProgram struct {
-    Auth Auth
-    API  API
-}
-
-type Location struct {
-    Key string
-}
-
-type WeCom struct {
-    AppId     string
-    AppSecret string
-}
-
-type Services struct {
-    Location *Location
-    WeCom    *WeCom
+    Logging *log.Config
+    ORM     *orm.Config
 }
 
 func (c *Config) String() string {

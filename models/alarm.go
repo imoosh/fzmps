@@ -94,40 +94,25 @@ func (t EvilType) String() string {
     }
 }
 
-type VictimAlarm struct {
-    AlarmId     string      `json:"alarm_id"`
-    Defender    string      `json:"defender"`
-    Phone       string      `json:"phone" gorm:"phone;type:varchar(64)"`
-    VictimLevel VictimLevel `json:"victim_level" gorm:"victim_level;type:varchar(64)"`
-    EvilType    EvilType    `json:"evil_type" gorm:"evil_type;type:varchar(64)"`
-    OccurTime   string      `json:"occur_time" gorm:"occur_time;type:varchar(64)"`
-    InfoType    InfoType    `json:"info_type" gorm:"info_type;type:varchar(64)"`
-    EvilInfo    string      `json:"evil_info" gorm:"evil_info;type:varchar(256)"`
+type AlarmMsg struct {
+    AppId     string     `json:"AppId"`
+    Seq       int        `json:"Seq"`
+    Timestamp int        `json:"Timestamp"`
+    SignId    string     `json:"SignId"`
+    Data      FzmpsAlarm `json:"Data"`
 }
 
-func (VictimAlarm) TableName() string {
-    return "fzmps_alarm"
-}
-
-type VictimAlarmMsg struct {
-    AppId     string      `json:"AppId"`
-    Seq       int         `json:"Seq"`
-    Timestamp int         `json:"Timestamp"`
-    SignId    string      `json:"SignId"`
-    Data      VictimAlarm `json:"data"`
-}
-
-type VictimAlarmMsgRet struct {
+type AlarmMsgRet struct {
     RetCode int    `json:"RetCode"`
     RetMsg  string `json:"RetMsg"`
 }
 
-func (m VictimAlarmMsg) ValidateAppId() bool {
-    return m.AppId == conf.Conf.Services.WeCom.AppId
+func (m AlarmMsg) ValidateAppId() bool {
+    return m.AppId == conf.Conf.API.WeCom.AppId
 }
 
-func (m VictimAlarmMsg) VerifySignature() bool {
-    c := conf.Conf.Services.WeCom
+func (m AlarmMsg) VerifySignature() bool {
+    c := conf.Conf.API.WeCom
 
     sum1 := md5.Sum([]byte(c.AppId + c.AppSecret + strconv.FormatInt(int64(m.Timestamp), 10)))
     sign := hex.EncodeToString(sum1[:])
@@ -150,27 +135,28 @@ type AlarmTask struct {
 }
 
 var alarmPool = sync.Pool{
-    New: func() interface{} { return new(VictimAlarm) },
+    New: func() interface{} { return new(FzmpsAlarm) },
 }
 
-func NewAlarm() *VictimAlarm {
-    return alarmPool.Get().(*VictimAlarm)
+func NewAlarm() *FzmpsAlarm {
+    return alarmPool.Get().(*FzmpsAlarm)
 }
 
-func (va *VictimAlarm) Free() {
+func (va *FzmpsAlarm) Free() {
     alarmPool.Put(va)
 }
 
 type FzmpsAlarm struct {
-    ID          uint   `json:"-"            gorm:"primarykey"`
-    Defender    string `json:"defender"     gorm:"defender;type:varchar(64)"`     // 劝阻人信息
-    UnionId     string `json:"unionid"      gorm:"unionid;type:varchar(64)"`      // 被劝阻人微信union_id
-    Phone       string `json:"phone"        gorm:"phone;type:varchar(32)"`        // 被劝阻人手机号
-    Alarm       string `json:"alarm"        gorm:"alarm;type:varchar(512)"`       // 预警数据
-    CreateTime  string `json:"time"         gorm:"create_time;type:varchar(32)"`  // 创建时间
-    IsPushed    bool   `json:"is_pushed"    gorm:"is_pushed;type:int(4)"`         // 是否已推送过
-    IsConfirm   bool   `json:"is_confirm"   gorm:"is_confirm;type:int(4)"`        // 是否已确认
-    ConfirmTime string `json:"confirm_time" gorm:"confirm_time;type:varchar(32)"` // 确认时间
+    ID           uint   `json:"-"            gorm:"primarykey"`
+    AlarmId      string `json:"alarm_id"     gorm:"alarm_id;type:varchar(64)"`
+    Defender     string `json:"defender"     gorm:"defender;type:varchar(64)"`       // 劝阻人信息
+    UnionId      string `json:"unionid"      gorm:"unionid;type:varchar(64)"`        // 被劝阻人微信union_id
+    Phone        string `json:"phone"        gorm:"phone;type:varchar(32)"`          // 被劝阻人手机号
+    AlarmMessage string `json:"alarm_message"gorm:"alarm_message;type:varchar(512)"` // 预警数据
+    CreateTime   string `json:"time"         gorm:"create_time;type:varchar(32)"`    // 创建时间
+    IsPushed     bool   `json:"is_pushed"    gorm:"is_pushed;type:int(4)"`           // 是否已推送过
+    IsConfirm    bool   `json:"is_confirm"   gorm:"is_confirm;type:int(4)"`          // 是否已确认
+    ConfirmTime  string `json:"confirm_time" gorm:"confirm_time;type:varchar(32)"`   // 确认时间
 }
 
 func (FzmpsAlarm) TableName() string {

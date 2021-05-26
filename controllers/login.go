@@ -2,6 +2,7 @@ package controllers
 
 import (
     "centnet-fzmps/common/log"
+    "centnet-fzmps/conf"
     "centnet-fzmps/models"
     "centnet-fzmps/utils"
     "encoding/base64"
@@ -117,8 +118,8 @@ func WeChatLogin(c *gin.Context) {
     var (
         err       error
         req       WeChatLoginReq
-        appId     = "wx3a6389b153c6df95"
-        appSecret = "6ca15b48f10d7359f0d0e28330ccd36a"
+        appId     = conf.Conf.Services.MiniPro.AppId
+        appSecret = conf.Conf.Services.MiniPro.AppSecret
     )
 
     // 读取请求参数

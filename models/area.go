@@ -1,19 +1,17 @@
 package models
 
-
-
-type Province struct {
+type FzmpsProvince struct {
     Id           int
     ProvinceCode int
     ProvinceName string
     ShortName    string
 }
 
-func (Province) TableName() string {
-    return "province"
+func (FzmpsProvince) TableName() string {
+    return "fzmps_province"
 }
 
-type City struct {
+type FzmpsCity struct {
     Id           int
     CityCode     int
     ProvinceCode int
@@ -22,11 +20,11 @@ type City struct {
     Orders       int
 }
 
-func (City) TableName() string {
-    return "city"
+func (FzmpsCity) TableName() string {
+    return "fzmps_city"
 }
 
-type County struct {
+type FzmpsCounty struct {
     Id           int
     CountyCode   int
     CityCode     int
@@ -37,6 +35,6 @@ type County struct {
     CityId       int
 }
 
-func (County) TableName() string {
-    return "county"
+func (FzmpsCounty) TableName() string {
+    return "fzmps_county"
 }
