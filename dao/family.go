@@ -7,7 +7,7 @@ import (
 )
 
 // 创建家庭成员
-func (db *Dao) CreateFamilyMember(m *models.Family) {
+func (db *Dao) CreateFamilyMember(m *models.FzmpsFamily) {
     if err := db.db.Create(m).Error; err != nil {
         log.Error(err)
     }
@@ -27,15 +27,15 @@ func (db *Dao) DeleteFamilyMember(id string) {
 }
 
 // 更新家庭成员
-func (db *Dao) UpdateFamilyMember(m *models.Family) {
-    tmp := &models.Family{Relation: m.Relation, Name: m.Name, Phone: m.Phone, Sex: m.Sex, Age: m.Age, QQ: m.QQ, WX: m.WX}
+func (db *Dao) UpdateFamilyMember(m *models.FzmpsFamily) {
+    tmp := &models.FzmpsFamily{Relation: m.Relation, Name: m.Name, Phone: m.Phone, Sex: m.Sex, Age: m.Age, QQ: m.QQ, WX: m.WX}
     if err := db.db.Where("id = ?", m.ID).Updates(tmp).Error; err != nil {
         log.Error(err)
     }
 }
 
 // 获取所有家庭成员
-func (db *Dao) QueryFamilyMembers(userId uint) (m []models.Family) {
+func (db *Dao) QueryFamilyMembers(userId uint) (m []models.FzmpsFamily) {
     if err := db.db.Where("user_id = ? and is_deleted = 0", userId).Find(&m); err != nil {
         log.Error(err)
     }
@@ -43,7 +43,7 @@ func (db *Dao) QueryFamilyMembers(userId uint) (m []models.Family) {
 }
 
 // 获取家庭成员
-func (db *Dao) QueryFamilyMember(id string) (m *models.Family) {
+func (db *Dao) QueryFamilyMember(id string) (m *models.FzmpsFamily) {
     fid, err := strconv.Atoi(id)
     if err != nil {
         log.Error(err)
