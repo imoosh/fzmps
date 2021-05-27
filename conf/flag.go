@@ -3,9 +3,9 @@ package conf
 import "flag"
 
 var (
-    configFile string
+	configFile string
 )
 
 func init() {
-    flag.StringVar(&configFile, "c", "./config.toml", "default profile")
+	flag.StringVar(&configFile, "c", "./config.toml", "default profile")
 }
