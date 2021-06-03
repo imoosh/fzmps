@@ -1,4 +1,4 @@
-package controllers
+package wecom
 
 import (
 	"centnet-fzmps/dao"

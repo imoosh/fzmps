@@ -1,8 +1,7 @@
-package api
+package wecom
 
 import (
 	"centnet-fzmps/common/log"
-	"centnet-fzmps/controllers"
 	"centnet-fzmps/models"
 	"github.com/gin-gonic/gin"
 	"time"
@@ -48,5 +47,5 @@ func WeComVictimAlarm(c *gin.Context) {
 	msg.Data.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	// 入库
-	controllers.DB(c).InsertWeComAlarm(&msg.Data)
+	DB(c).InsertWeComAlarm(&msg.Data)
 }

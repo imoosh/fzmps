@@ -23,7 +23,7 @@ func ReturnHTTPSuccess(val interface{}) interface{} {
 
 	js, _ := json.Marshal(&d)
 
-	if len(js) < 1024 {
+	if len(js) < 2048 {
 		log.Debug(string(js))
 	}
 	return d

@@ -1,4 +1,4 @@
-package controllers
+package wxmp
 
 import (
 	"centnet-fzmps/common/log"
@@ -57,13 +57,14 @@ func RequestFamilyMembersList(c *gin.Context) {
 }
 
 func DeleteFamilyMember(c *gin.Context) {
-	id := c.GetHeader("id")
+	id := c.Param("id")
 	if len(id) == 0 {
 		c.JSON(http.StatusOK, utils.ReturnHTTPSuccess(nil))
 		return
 	}
 
 	DB(c).DeleteFamilyMember(id)
+	c.JSON(http.StatusOK, utils.ReturnHTTPSuccess(nil))
 }
 
 func AddFamilyMember(c *gin.Context) {
@@ -148,7 +149,7 @@ func UpdateFamilyMember(c *gin.Context) {
 }
 
 func RequestFamilyMember(c *gin.Context) {
-	id := c.GetHeader("id")
+	id := c.Param("id")
 	if len(id) == 0 {
 		c.JSON(http.StatusOK, utils.ReturnHTTPSuccess(nil))
 		return

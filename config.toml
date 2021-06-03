@@ -35,3 +35,8 @@
     [Services.MiniPro]
     AppId = "wx3a6389b153c6df95"
     AppSecret = "6ca15b48f10d7359f0d0e28330ccd36a"
+
+    [Services.WeCom]
+    AppId = "5e369j53"
+    AppSecret = "be2f9f82efca04d5c80e9420c79a5027"
+    PushUrl = "http://192.168.1.14:8081/api/wechatContactInfo"
