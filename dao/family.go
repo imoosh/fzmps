@@ -21,7 +21,7 @@ func (db *Dao) DeleteFamilyMember(id string) {
 		return
 	}
 
-	if err := db.db.Where("id = ?", fid).Update("is_deleted", 1).Error; err != nil {
+	if err := db.db.Model(&models.FzmpsFamily{}).Where("id = ?", fid).Update("is_deleted", 1).Error; err != nil {
 		log.Error(err)
 	}
 }

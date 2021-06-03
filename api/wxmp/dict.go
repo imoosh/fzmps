@@ -1,4 +1,4 @@
-package controllers
+package wxmp
 
 import (
 	"centnet-fzmps/common/log"
