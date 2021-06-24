@@ -62,7 +62,7 @@ func routeInit(dao *dao.Dao) *gin.Engine {
 	// 请求宣传案例
 	router.GET("/api/publicityCase/get", wxmp.RequestPublicityCase)
 	// 获取案例正文
-	router.GET("/api/publicityContent/get", wxmp.RequestPublicityCaseContent)
+	router.GET("/api/publicityCaseContent/get", wxmp.RequestPublicityCaseContent)
 	// 确认宣传案例
 	router.GET("/api/publicityCase/confirm", wxmp.ConfirmPublicityCase)
 
