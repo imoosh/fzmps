@@ -33,8 +33,8 @@
 
     # 小程序后台对接微信平台授权
     [Services.MiniPro]
-    AppId = "wx3a6389b153c6df95"
-    AppSecret = "6ca15b48f10d7359f0d0e28330ccd36a"
+    AppId = "wx1c6ad71e0dce8110"
+    AppSecret = "a02090353df1fb2b77f013093b69a367"
 
     [Services.WeCom]
     AppId = "5e369j53"
