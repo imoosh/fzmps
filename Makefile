@@ -51,9 +51,9 @@ fmt:
 # deps:
 
 install:
+	install -d $(OUTPUT_PATH)/log
 	install -d $(OUTPUT_PATH)/bin
 	install -d $(OUTPUT_PATH)/conf
-	install -d $(OUTPUT_PATH)/scripts
 	install -m 0755 $(SCRIPTS_PATH)/start.sh $(OUTPUT_PATH)/
 	install -m 0755 $(SCRIPTS_PATH)/stop.sh $(OUTPUT_PATH)/
 	install config.toml $(OUTPUT_PATH)/conf/
