@@ -11,6 +11,8 @@ Icon
 # Thumbnails
 ._*
 
+.idea
+
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
 .fseventsd
@@ -118,3 +120,10 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 log
+.idea/centnet-fzmps.iml
+.idea/deployment.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/sshConfigs.xml
+.idea/vcs.xml
+.idea/webServers.xml

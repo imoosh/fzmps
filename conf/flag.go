@@ -7,5 +7,5 @@ var (
 )
 
 func init() {
-	flag.StringVar(&configFile, "c", "./config.toml", "default profile")
+	flag.StringVar(&configFile, "c", "./conf/config.toml", "default profile")
 }

@@ -1,6 +1,3 @@
-# centnet-rfs profile
-# created by Wayne Yao, 2020-11-17
-
 # 日志相关配置
 [Logging]
     LogPath = "./log"
@@ -11,16 +8,16 @@
     MaxSize = 10
 
 [API]
-    Host = "192.168.1.14"
+    Host = "192.168.1.100"
     Port = 6060
 
-    # 企业微信后台推送数据授权
+    # 企业微信后台推送预警数据授权
     [API.WeCom]
     AppId = "432a8nc4"
     AppSecret = "a8f224aea83a97ed395c75df6fe3a889"
 
 [ORM]
-    DSN = "root:123456@tcp(192.168.1.14:3306)/centnet_fzmps?timeout=10s&readTimeout=10s&writeTimeout=10s&parseTime=true&loc=Local&charset=utf8mb4"
+    DSN = "root:123456@tcp(192.168.1.100:3306)/fzmps?timeout=10s&readTimeout=10s&writeTimeout=10s&parseTime=true&loc=Local&charset=utf8mb4"
     Active = 100
     Idle = 5
     IdleTimeout = "10m"
@@ -36,7 +33,8 @@
     AppId = "wx1c6ad71e0dce8110"
     AppSecret = "a02090353df1fb2b77f013093b69a367"
 
+    # 推送微信用户unionid数据到企业微信
     [Services.WeCom]
     AppId = "5e369j53"
     AppSecret = "be2f9f82efca04d5c80e9420c79a5027"
-    PushUrl = "http://192.168.1.14:8081/api/wechatContactInfo"
+    PushUrl = "http://192.168.1.100:8081/api/wechatContactInfo"
