@@ -17,7 +17,7 @@ func (db *Dao) QueryAlarmByPhone(phone string) (a []models.FzmpsAlarm) {
 	// 查询没查看的预警数据
 	//if err := db.db.Where("phone = ? and is_confirm = 0", phone).Find(&a).Error; err != nil {
 	//if err := db.db.Where("phone = ?", phone).Find(&a).Error; err != nil {
-	if err := db.db.Model(&models.FzmpsAlarm{}).Find(&a).Error; err != nil {
+	if err := db.db.Model(&models.FzmpsAlarm{}).Where("phone = ?", phone).Find(&a).Error; err != nil {
 		if err != gorm.ErrRecordNotFound {
 			log.Error(err)
 		}
