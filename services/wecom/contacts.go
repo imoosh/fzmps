@@ -15,8 +15,8 @@ import (
 )
 
 type WeChatContactInfo struct {
-    Phone   string `json:"Phone"     gorm:"column:phone; type:varchar(32);"`
-    UnionId string `json:"UnionId"   gorm:"column:union_id; type:varchar(128);"`
+    Phone   string `json:"phone"     gorm:"column:phone; type:varchar(32);"`
+    UnionId string `json:"union_id"   gorm:"column:union_id; type:varchar(128);"`
 }
 
 func (WeChatContactInfo) TableName() string {
